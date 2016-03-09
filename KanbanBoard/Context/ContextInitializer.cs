@@ -13,7 +13,7 @@ namespace KanbanBoard.Context
         {
             var board = new Board() { Name = "My board", Members = new List<Member>() };
 
-            var member = new Member()
+            var daniel = new Member()
             {
                 Username = "Daniel",
                 Password = "daniel100",
@@ -25,10 +25,37 @@ namespace KanbanBoard.Context
                 Boards = new List<Board>(),
                 Items = new List<Item>(),
             };
+            var anders = new Member()
+            {
+                Username = "Anders",
+                Password = "secret1234",
+                Email = "anders@mail.dk",
+                FirstName = "Anders",
+                LastName = "Børjesson",
+                Bio = "About Anders...",
+                Boards = new List<Board>(),
+                Items = new List<Item>(),
+            };
+            var zuhair = new Member()
+            {
+                Username = "Zuhair",
+                Password = "password100",
+                Email = "zuhair@mail.dk",
+                FirstName = "Zuhair",
+                MiddleName = "Haroon",
+                LastName = "Khan",
+                Bio = "About Zuhair...",
+                Boards = new List<Board>(),
+                Items = new List<Item>(),
+            };
 
             dataContext.Boards.Add(board);
-            dataContext.Members.Add(member);
-            member.Boards.Add(board);
+            dataContext.Members.Add(daniel);
+            dataContext.Members.Add(anders);
+            dataContext.Members.Add(zuhair);
+            daniel.Boards.Add(board);
+            anders.Boards.Add(board);
+            zuhair.Boards.Add(board);
 
             dataContext.Lists.Add(new List() { Name = "To do", BoardId = 1 });
             dataContext.Lists.Add(new List() { Name = "Doing", BoardId = 1 });
@@ -57,7 +84,9 @@ namespace KanbanBoard.Context
             foreach (var item in items)
             {
                 dataContext.Items.Add(item);
-                member.Items.Add(item);
+                daniel.Items.Add(item);
+                anders.Items.Add(item);
+                zuhair.Items.Add(item);
             }
 
             dataContext.SaveChanges();
