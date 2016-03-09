@@ -1,0 +1,20 @@
+﻿@{
+    string active = "";
+    string notActive = "";
+    if (Request.Url.ToString().Contains("Favourites"))
+    {
+        active = "active";
+    }
+    else
+    {
+        notActive = "active";
+    }
+}
+<ul class="row nav nav-tabs">
+    <li role="presentation" class="@notActive">
+        @Html.ActionLink("All boards", "Index", "Board")
+    </li>
+    <li role="presentation" class="@active">
+        @Html.ActionLink("My favourite boards", "Favourites", "Board")
+    </li>
+</ul>

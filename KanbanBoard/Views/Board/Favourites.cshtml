@@ -1,0 +1,21 @@
+﻿@using KanbanBoard.Models
+@model List<Favourite>
+@{
+    ViewBag.Title = "Kanban Board";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Shared/_BoardMenu.cshtml")
+
+<div class="row">
+    <h3>My favouite boards: </h3>
+    @foreach (var board in Model)
+    {
+        <div class="text-center well wel-sm col-md-3">
+            <h4>
+                @Html.ActionLink(board.Board.Name, "Lists", "List", new {id = board.BoardId}, null)
+            </h4>
+            @Html.ActionLink("Unfavourite board", "Unfavourite", "Board", new { id = board.BoardId }, null)
+        </div>
+    }
+</div>

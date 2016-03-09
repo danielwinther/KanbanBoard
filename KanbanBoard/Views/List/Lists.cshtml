@@ -1,0 +1,84 @@
+﻿@using KanbanBoard.Models
+@model ListViewModel
+@{
+    ViewBag.Title = "Lists";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table class="row table table-responsive">
+    @foreach (var list in Model.Lists)
+    {
+        <tr>    
+            <th>
+                <h3>
+                    @list.Name | @Html.ActionLink("Edit list", "EditList", "List", new { id = list.ListId }, null)
+                    -
+                    @Html.ActionLink("Delete list", "DeleteList", "List", new {id = list.ListId}, null)
+                </h3>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        foreach (var item in list.Items.OrderBy(i => i.Index))
+        {
+            <tr>
+                <td class="@item.Color.Name">
+                    <h4>@Html.ActionLink(item.Title, "Item", "Item", new {id = item.ItemId}, null)</h4>
+                    <p>@($"{item.Deadline:dd/MM/yyyy}")</p>
+                    @if (item.Members != null)
+                    {
+                        foreach (var member in item.Members)
+                        {
+                            <span style="margin-right: 5px;" class="label label-primary">
+                                @member.FirstName.Substring(0, 1).ToUpper()
+                                @if (member.MiddleName != null)
+                                {
+                                    @member.MiddleName.Substring(0, 1).ToUpper()
+                                }
+                                @member.LastName.Substring(0, 1).ToUpper()
+                            </span>
+                        }
+                    }
+                </td>
+                <td>
+                    @if (list.Items.OrderBy(i => i.Index).First() != item)
+                    {
+                        <p>
+                            <a class="btn btn-default glyphicon glyphicon-arrow-up" href="@Request.Url.GetLeftPart(UriPartial.Authority)/Item/Move/Up/@item.ItemId"></a>
+                        </p>
+                    }
+                    @if (list.Items.OrderBy(i => i.Index).Last() != item)
+                    {
+                        <p>
+                            <a class="btn btn-default glyphicon glyphicon-arrow-down" href="@Request.Url.GetLeftPart(UriPartial.Authority)/Item/Move/Down/@item.ItemId"></a>
+                        </p>
+                    }
+                </td>
+                <td>
+                    <p>@Html.ActionLink(" ", "EditItem", "Item", new { id = item.ItemId }, new { @class = "btn btn-default glyphicon glyphicon-edit" })</p>
+                </td>
+                <td>
+                    <p>
+                        @Html.ActionLink(" ", "DeleteItem", "Item", new {id = item.ItemId}, new {@class = "btn btn-danger glyphicon glyphicon-remove"})
+                    </p>
+                </td>
+            </tr>
+        }
+    }
+    <tr>
+        <td>
+            <h4>@Html.ActionLink("Create new item", "CreateItem", "Item", null, new {@class = "text-muted"})</h4>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <h3>@Html.ActionLink("Create new list", "CreateList", "List", null, new {@class = "text-muted"})</h3>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>

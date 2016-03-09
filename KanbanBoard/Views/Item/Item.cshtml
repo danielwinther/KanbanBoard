@@ -1,0 +1,73 @@
+﻿@using KanbanBoard.Models
+@model Item
+@{
+ViewBag.Title = "Item";
+Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Color == null)
+{
+    <h3><span class="label label-default">@Model.Title</span></h3>
+}
+else
+{
+    <h3><span class="label label-@Model.Color.Name">@Model.Title</span></h3>
+}
+<p>@Model.Description</p>
+<p>@($"{Model.Deadline:dd/MM/yyyy}")</p>
+<p>
+    <b>Assigned to:</b>
+    @if (Model.Members != null)
+    {
+        foreach (var member in Model.Members)
+        {
+            <a class="btn btn-danger btn-xs glyphicon glyphicon-remove" href="@Request.Url.GetLeftPart(UriPartial.Authority)/Item/RemoveMember/MemberId/@member.MemberId/ItemId/@Model.ItemId"></a>
+            if (Model.Members.Count == 1)
+            {
+                <span>
+                    @(member.FirstName)
+                    @if (member.MiddleName != null)
+                    {
+                        @(member.MiddleName)
+                    }
+                    @(member.LastName)
+                </span>
+            }
+            else
+            {
+                <span>
+                    @(member.FirstName)
+                    @if (member.MiddleName != null)
+                    {
+                        @(member.MiddleName)
+                    }
+                    @if (Model.Members.Last() == member)
+                    {
+                        @(member.LastName)
+                    }
+                    else
+                    {
+                        @(member.LastName + ", ")
+                    }
+                </span>
+            }
+        }
+        <p>@Html.ActionLink("Add member to item", "AddMember", null, new { @class = "btn btn-default" })</p>
+    }
+</p>
+<hr class="row" />
+<h4>Comments | @Html.ActionLink("Create new comment", "CreateComment")</h4>
+@foreach (var comment in Model.Comments)
+{
+    <h4>@comment.Title | @Html.ActionLink("Delete comment", "DeleteComment", new { id = comment.CommentId })</h4>
+    <p>@comment.Text</p>
+    <p>
+        <b>Written by:</b> @comment.Member.Username (@comment.Member.FirstName
+        @if (comment.Member.MiddleName != null)
+        {
+            @comment.Member.MiddleName
+        }
+        @comment.Member.LastName)
+    </p>
+}
+

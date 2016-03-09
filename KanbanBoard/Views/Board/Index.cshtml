@@ -1,0 +1,36 @@
+﻿@using KanbanBoard.Models
+@model List<Member>
+@{
+    ViewBag.Title = "Boards";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("~/Views/Shared/_BoardMenu.cshtml")
+
+<div class="row">
+    @foreach (var member in Model)
+    {
+        <h3>Boards for: @member.Username</h3>
+        foreach (var board in member.Boards)
+        {
+            <div class="text-center well wel-sm col-md-3">
+                <h4>
+                    @Html.ActionLink(board.Name, "Lists", "List", new {id = board.BoardId}, null)
+                </h4>
+                <small>
+                    @Html.ActionLink("Favourite board", "Favourite", "Board", new { id = board.BoardId }, null)
+                    |
+                    @Html.ActionLink("Delete board", "Delete", "Board", new { id = board.BoardId }, null)
+                    |
+                    @Html.ActionLink("Edit board", "Edit", "Board", new { id = board.BoardId }, null)
+                </small>
+            </div>
+        }
+        <div class="text-center well wel-sm col-md-3">
+            <h4>
+                @Html.ActionLink("Add new board", "Create", "Board", null, new {@class = "text-muted text-center"})
+            </h4>
+            <span class="text-muted glyphicon glyphicon-plus"></span>
+        </div>
+    }
+</div>
